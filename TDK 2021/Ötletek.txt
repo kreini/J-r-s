@@ -1,0 +1,64 @@
+- korábbi tdk használható (nem másolható)
+  elkészült, tech infók, képek, fejlődés, előnyök, hátrányok -> cél: mozgásbarátabbság
+- elkészült mostani eszköz -> hitelesítő mérések
+- sok képek
+- Rita féle eljárás - R / matlab / ???
+- Járásvizsgálat: Szklerózis multiplexes emberek
+  -> nem lehet laborban mérni -> pl: telefonos mérés
+  -> lehetne egy kifinomultabb mérést alkalmazni
+- összehasonlítás telefonos méréssel
+- bicepsz is jó ötlet!
+- súlycsoportos küzdősportok -> verseny előtt nem sokkal lefogynak
+  -> 8kg elveszik -> félhalottak (xd)
+  -> vérparaméter mellett a mozgás vizsgálata is érdekes lehet
+- Van vevő az eszközre -> lecc gó :D
+- lassú és gyors mérések végzése -> méréshatár vizsgálat
+  -> lehet a mi eszközünk jobb -> vizsgálat
+- táblázat -> nagyon fontos, mert fasza
+- járáskép nem szépül az alanynak, de könnyebben csinál meg dolgokat
+  -> igazolás a járás könnyebségére
+
+
+DARABOLAS
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html
+
+WAVELET
+https://towardsdatascience.com/wavelet-fourier-analysis-on-the-enso-and-monsoon-data-in-python-31504eeadc2c
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cwt.html
+
+DERIVALAS
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html?fbclid=IwAR3eeaz4t4FTrFYxK46C-TwXE6WmqmdzTU91o3oKULh6a-udgcD7zcl978U
+
+import derivative
+l = 601
+pont = 14
+sg = derivative.SavitzkyGolay(left=.5, right=.5, order=2, periodic=False)
+
+x_d = sg.d(df2.loc[df2.pont==pont,["x"]].values.flatten(), np.arange(l))
+y_d = sg.d(df2.loc[df2.pont==pont,["y"]].values.flatten(), np.arange(l))
+z_d = sg.d(df2.loc[df2.pont==pont,["z"]].values.flatten(), np.arange(l))
+
+
+
+xsens fifa
+https://www.xsens.com/cases/how-xsens-motion-capture-produced-hypermotion-in-fifa-22
+
+xsens
+https://www.xsens.com/xsens-dot?utm_term=xsens%20dot&utm_medium=ppc&utm_campaign=EEC+%7C+Search+%7C+Brand&utm_source=adwords&hsa_cam=11538698287&hsa_src=g&hsa_mt=e&hsa_ver=3&hsa_net=adwords&hsa_tgt=kwd-1000087374696&hsa_acc=1306794700&hsa_grp=112724193499&hsa_kw=xsens%20dot&hsa_ad=476809469253&gclid=CjwKCAjwz5iMBhAEEiwAMEAwGG4KVm-R3o5h1lHnbhdesB5GgyT0WEUA-POQ8NjIb0jT0euE4JDfoxoCKQ4QAvD_BwE
+
+notch
+https://wearnotch.com/
+
+ncbi
+https://pubmed.ncbi.nlm.nih.gov/16460376/
+
+Pusztán véletlen eszembe jutott, hogy a saját és edzőtársam felkarjára helyezzek 1-1 darabot a szenzoraimból.
+
+
+
+- piacon levős táblázat
+- fejlődős 5 gen folyamatábra (OTDK+ vagy sajátként hivatkozva)
+- elveszített markerek - gyors mozgás?
+
+- Ha real time, akkor mennyire csökkentené a működési időt?
+- A rendszer nedves környezetben való alkalmazása
