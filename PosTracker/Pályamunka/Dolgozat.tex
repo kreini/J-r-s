@@ -1,0 +1,153 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[a4paper]{geometry} 
+\usepackage[latin2]{inputenc}
+\usepackage{amsmath,amsthm,amssymb,xfrac}
+\usepackage{fancyhdr}
+\author{Kreinicker Gábor}
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usetikzlibrary{arrows}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1}
+\cfoot{\thepage. oldal}
+
+
+
+
+\begin{document}
+	\begin{titlepage}
+		\begin{center}
+			\vspace*{1cm}
+		
+			\textbf{PosTracker}
+		
+			\vspace{0.5cm}
+			Járás során fellépõ rendellenességeket kimutató eszköz
+		
+			\vspace{1.5cm}
+		
+			\textbf{Kreinicker Gábor}
+			
+			\vfill
+			
+			\includegraphics[width=80mm]{borito}
+			
+			\vfill		
+		
+			Szegedi Radnóti Miklós Kísérleti Gimnázium\\
+			Szeged\\
+			2020\\
+			
+		
+		\end{center}
+	\end{titlepage}
+
+
+	Napjainkban egyre több adatot gyûjtünk, mint például az okos órák segítségével a pulzus vagy ECG, de akár gondolhatunk a telefonba épített lépésszámlálóra is, mégsem foglalkozunk járásunkkal eléggé. Sok embert érintenek a járásszervi problémák, ezek minél hamarabbi felismerése sok emberen nagyon sokat segíthet. Jelenleg a szûrõvizsgálatok sokszor idõigényesek vagy a rövidségükbõl adódóan pontatlanok. (Ilyenkor képes koncentrálni az ember és a lehetõ legszabályosabban viselkedni.) Beható vizsgálatok csak járáslaborokoban végezhetõek, melyek száma és kapacitása nem teszi lehetõvé a nagy számú szûrést.
+	
+	$ $
+	
+	A \cucc egy olyan járáshibákat kimutató eszköz, mely a járás laborok pontosságát szeretné biztosítani, annak költségessége és összetettsége nélkül. Az orvosi rendelõben, vagy akár az iskola orvos általi, a felhelyezést követõen az alany végezheti mindennapi dolgait, majd visszatérve az orvos azonnal kinyerheti az adatokat.
+	
+	Az eszköz a járásproblémák diagnosztikáját jelentõsen lerövidítené, ugyanis a mûszerek és a járópad hosszas elõkészületeket igényel, míg a \cucc felhelyezése csupán pár perc.  Mivel az alany nem a rendelõben lévõ járópadon végzi vizsgálatot, hanem hétköznapi környezetben, így valós, a rendelõi környezettõl és a megfelelési kényszer (az ún. \emph{fehér köpeny} effektus) hibáitól mentes adatokat kapunk. 
+		
+	$ $
+	
+	Azokat az adatokat, melyet a \cucc ki tud nyerni, jelenleg az orvosok futópadon való járásvizsgálattal és rengeteg nyomásérzékelõvel, vagy Motion Capture technológiával képesek mérni.
+	
+	A \emph{Nature.com} oldalán a napokban megjelent egy cikk\footnote{https://www.nature.com/articles/s41467-020-15086-2}, ahol egy az enyémhez hasonló eszközt vizsgálnak.
+	
+	A cikk rávilágít, hogy ezeknek a lábra erõsíthetõ gyorsulásmérõs és giroszkópos rendszereknek több hátulütõje is van. Egyrészt ezek a szenrok hajlamosak idõben elhangolódni, ami akár egy perc alatt méteres hibát is okozhat. Ezt drift-nek hívják, a kiküszöbölésére sok algoritmust fejlesztettek, de ezek használata nehéz és sokszor számítás igényes. Másrészt a technikai adottságok miatt egyszerre csak egy szenzor olvasása lehetséges. Ez két problémát idézett meg: A mintavételezések száma jelentõsen lecsökken a Motion Capture technológiával szemben. A másik, hogy az egyes szenzorok adatai idõben el lesznek tolódva. Ezekre mindre találtunk olyan megoldást, mely jelentõs mértékben kiküszöböli ezeket a mintavételezési hibákat, melyeket a feldolgozó program részletes leírásánál fejtek ki.
+	
+	$ $
+
+	A \cucc megalkotását az iskolai szûrõvizsgálatokon tapasztalt pontatlan mérések ihlették. Az eszköz mûködési elvének alapját pedig az orvostudományban bevált és hazánkban is elterjedt ABPM (24 órás vérnyomásmérõ) rendszerek adták.
+
+	Az eszköz felépítése több részre bontható: A központi eleme egy \emph{Raspberry Pi Zero W v1.1}, mely feladata a mért adatok olvasása, kimentése, és egy elõre kijelölt számítógépre küldése vezeték nélkül. Ez egy saját tervek alapján 3D nyomtatóval kinyomtatott házban van benne, melyet egy derékszíjjal az alanyra lehet erõsíteni. Ez a ház alulról nyitott, így hozzá lehet férni a \agy csatlakozóihoz, valamint innen jönnek ki a lábra erõsíthetõ szenzorok kábelei.
+	
+	Hét \emph{MPU9250} típusú szenzor alkotja a \cucc mintavételezõ rendszerét. Ezek képesek mérni a gyorsulást, valamint a szögsebességet x, y, és z irányban, emellett magnetométer is található bennük. Az egyik az elõbb említett házban van a  \agy mellett. A további hat szenzor lábanként a következõ módon oszlik el: 1-1 db a lábfejen, 1-1 db a vádlin és 1-1 db a combon. Ehhez szükséges a szintén saját tervek alapján 3D nyomtatott házakhoz erõsített gumiszalagra varrt tépõzárak. Minden szenzorhoz csatlakozik 5db vezeték, melybõl kettõ az áramellátás, szintén kettõ az adatátvitelhez szükséges és az ötödik határozza meg a szenzor  olvasás állapotát.
+	
+	Mindezek áramellátását egy \emph{Huawei} márkájú 6700 mAh-s külsõ akkumulátor szolgálja, mely a \agy háza mellett van a derékszíjra erõsítve.
+	
+	$ $
+
+	A \cucc teljes használatához három program szükséges. Ezek mindegyike python programnyelven íródtak.
+	
+	Egyik a \agy-n levõ mintavételezõ, kimentõ és továbbküldõ program. Fejlesztés során egy olyan problémába ütköztem, hogy egyszerre csak egy szenzort tudtam olvasásra bírni. Utánaolvasást követõen megértettem, hogy I$^{2}$C buszon kommunikál a \agy a szenzorokkal, ami alapján egy szenzor két állapotban lehet: alacsony jel esetén 0x68-as címen, magas jelnél 0x69-es címen. Az állapot attól függ, hogy az AD0 láb kap-e jelet az ötödik kábelrõl a \agy-tõl. Tehát nekem csak gyorsan kell váltogatnom a szenzorok állapotát úgy, hogy mindig pontosan egy legyen a 0x68-as címen, ahonnan az olvasás történik.
+	
+	Ez alapján létrehozhattam egy mérési ciklust, melyek során minden szenzor egymás után egyesével aktívvá válik. Az olvasás 10 Hz-re adódott, ami azt jelenti, hogy 10 ciklus megy végbe egy másodperc alatt, tehát másodpercenként egy szenzortól tíz adatsort tudunk fogadni. Egy adatsor a hat mérendõ adatot (gyorsulás és giroszkóp 3 tengelyen), a szenzor számát, és egy idõbélyegzõt tartalmaz. Utóbbi célja, hogy a feldolgozás során idõben el tudjuk helyezni az adatokat. Ezeket folyamatosan egy \emph{kimenet.csv} nevû fájlba menti, mely a mérés megszakítását követõen küldi el a másik számítógépre.
+	
+	$ $
+	
+	A másik program a fogadó számítógépen van \emph{server} néven. Ez egy helyi szervert hoz létre, mely össze van hangolva a \agy-n levõ programmal. Ezt csak futtatni kell. Amikor adat érkezik, ez a program nekünk ki is jelzi azt. Késõbb ez a program felhõben is futtatható, így nincs szükség lokális számítási kapacitásra, illetve a feldolgozás is gyorsulhat ez által. 
+		
+	$ $
+	
+	A harmadik program a feldolgozó és megjelenítõ program. Ez további két részre bontható: egy földolgozó részre és egy diagnózis felállító részre.
+	
+	A program feldolgozó részének elsõ feladata az adatok szenzoronkénti, majd mért adatonkénti szétválogatása. Ezután elkészítettem egy grafikont, melybe mind a három gyorsulás és mind a három szögsebességadat benne van. Ez nem volt célra vezetõ, átláthatatlanná váltak miatta az ábrák, így szétbontottam szögsebesség-idõ és gyorsulás-idõ grafikonokra.
+	
+	Ez már önmagában elég lehet egy diagnózis fölállításához, azonban lehet pontosítani rajtuk. A következõ megoldásokat a derékon levõ szenzor x irányú gyorsulását vizsgáltam, de természetesen minden csatornára megoldható.
+	
+ 	A viszonylag alacsony mintavételezés miatt az adatok igen szögletesen jelentek meg az ábrákon. Ezt próbálja orvosolni a \emph{négyzetes-spline interpoláció}, amely egy, a mért adatokat tartalmazó és a valós mozgást megközelítõ görbét hoz létre. (A \emph{szögletes-spline interpoláció} során egyre több plusz pontot építünk a mértek közé, ezzel egyre inkább próbáljuk közelíteni a valódi járás mintázatát.)
+	
+	A másik probléma az idõbeli elcsúszás. Elvégezve egy vizsgálatot, hogy mennyi idõ telt el két mintavételezés között, hamar feltûnt, hogy a mérés nem azonos idõközönként történik. Ennek okai a vezérlés pontatlansága és a kommunikációs hibák.A nem jól idõzített mintavételezés a spline-os interpoláció segítségével könnyen javíthatjuk, mivel a spline függvényének ismerete miatt bármely idõpillanatban kiszámolhatjuk a szenzor értékét.
+	
+	Ha az \emph{autokorreláció}-t alkalmazzuk egy másik mérhetõ adaton (jelen esetben az y irányú szögsebességen), akkor jól látható, hogy a periódusok kezdeti és végpontjai egy idõpillanatba kerültek és ehhez 100 mintás elcsúsztatás kell, ami az újra mintavételezés miatt 1 másodpercet jelent. Ez azt jelenti, hogy egy lépés 1 másodperc volt, ami hihetõ.
+		
+	A járás frekvenciáját is meg tudjuk határozni, ha létrehozunk egy periodogramot. Ezen jól látható, hogy az én általam mért alany járása $\approx$1 Hz. (Azonos az autokorrelációval kapottal)
+	
+	$ $
+	
+	A másik, diagnózist fölállító részének mûködési alapja egy konvolúciós neurális háló. Elsõ lépésben a gép számára jobban értelmezhetõ formába kellett hozni az adatokat, itt ez azt jelentette, hogy az interpolált jelet wavelet transzformáltam és az ebbõl létrejött igen hosszú képet felszeleteltem. Erre azért volt szükség, mert a nyers jelet nehéz feldolgozni és egy kis elõmunkával sokkal jobb eredményeket lehet elérni waveletek használatával. 
+	
+	A tanításra egy jól bevált MNIST-re használt konvolúciós neurális hálót írtam át. A gép megtanul több mintát, melyek már elõre be vannak sorolva a beteg és az egészséges tartományokba. Amint mutatunk neki egy ismeretlen járásmintát, õ képes lesz megmondani a korábbiak alapján, hogy mely tartományba eshet.
+	
+	Mivel nem volt meg a megfelelõ tudásom, és a határidõ is közeledett, így felkészítõ tanáromtól kaptam segítséget a gépi tanulás megalkotásához.
+	
+	$ $
+	
+	Egy mérés menete
+	
+	$ $ 
+	 
+	A jelen egészségügyi helyzet miatt lényegesen kevesebb mérésre volt lehetõségem, mint terveztem. Így most egy mérést saját magamon mutatok be.
+	
+	Miután fölcsatoltam magamra az eszközt és elindítottam az adatgyûjtést, nyolc percen keresztül sétáltam állandó sebességgel. A tudat, hogy rajtam van, bizonytalan járást eredményezett az elején. De a késõbbi grafikon elemzés kimutatta, hogy tartós viselés esetén egy idõ után megfeledkeztem a viselésérõl, és megfelelési kényszertõl független adatok érkeztek. Éppen ezért igyekeztem késõbbi idõintervallumot vizsgálni.
+	
+	Nyolc perc séta után a mérést megszakítottam, majd a két lábon különbözõ talpmagasságú cipõvel járási rendellenességet imitálva szintén nyolc percet sétáltam. 
+	
+	Ez után következhetett a feldolgozás. Elsõ esetben a nyers adatok szép szimmetriát, és periódikusságot mutattak, valamint észrevehetõ különbséget állapítottam meg ez és az imitált járáshibás között. Így jöhetett az autokorreláció, majd ezt követte a gépi tanulás. Véletlenszerûen kiragadva a nyolc perc sétából kettõ másodpercet a gép átlagosan $\approx$80$\%$ pontossággal fel tudta állítani a helyes diagnosztikát általa még nem látott mintán.
+	
+	A járáshiba egyetlen szenzor egyetlen gyorsulás csatornájából meghatározható volt $\approx$80$\%$ pontossággal. Ha a többi hat szenzort, és minden mért adatot ráállítunk a rendszerre, akkor ez még sokkal pontosabbá tehetõ. Sajnos ez bonyolultabb feladatnak bizonyult, mint terveztem, de a közeljövõben remélem sikerül, minden mért adatot felhasználni a kiértékelésnél. 
+	
+	$ $
+
+	A \cucc egyszerûségének és sokoldalúságának köszönhetõen széles körben hasznosítható.
+	
+	Kezdve az ötletadó iskolai szûrõvizsgálatokkal. Nagyon fontos, ha egy gyermeknek járási rendellenessége van, errõl minél elõbb tudomást kell szerezni. Ezzel az eszközzel egy szûrés során nagyon egyszerûen meg tudná mondani a szûrést végzõ orvos, érdemes-e további vizsgálatra küldeni a gyermeket.
+	
+	A \cucc szintén jó lehet sérült emberek rehabilitációs gyakorlatainál. Nyomon lehet követni a fejlõdés irányát és mértékét jóval kevesebb szakember igénybevételével. Ez mint fiataloknál, mint idõsebbeknél hasznos lehet. Több orvostól is kaptam ígéretet, hogy amint kész van az eszköz, akkor tesztelhetem.
+	
+	Sportolóknál is hasznos lehet ez az eszköz. Én - a jelen állapotoktól eltekintve - rendszeresen sportolok, így tudom, milyen fontos, hogy megfelelõen mozogjunk. Például labdarúgásban kimutatható lehetne egy jól és egy rosszul elrúgott labdánál a két technika közötti különbség, és ezáltal hatékonyabban tanulhatóvá válna a lövõtechnika. Alig néhány mérést követõen bármely sportágban jelentõsen lecsökkenthetnénk a sérülések számát azzal, hogy az elejétõl fogva megfelelõ mozgás-
+	technikát tanulnak a sportolók.
+
+	$ $
+	
+	A \cucc sokoldalúságának köszönhetõen több továbbfejlesztési lehetõség is fönnáll.
+	
+	Jelenleg az érzékelõknek nagy házra van szüksége, ugyanis egy aljzatra vannak szerelve. Ennek oka a fejlesztés során történõ gyors javítási lehetõség. Azonban az aljzat elhagyásával felére csökkenthetnénk a ház magasságát, ezzel még kényelmesebbé téve a viselését.
+	
+	Ez a gondolat továbbvihetõ azzal, ha nem ruhára vesszük fel az eszközt, hanem egyenesen olyan ruhát készítünk, ami tartalmazza a szenzorokat. Ezeken lehetnének valamivel drágább, de praktikus és felvarrható MbientLab MetaMotion szenzorok, amelyek gombelemmel mûködnek, így vezeték nélkül is használható lenne.
+	
+	A \cucc -t természetesen vezeték nélkülivé lehetne tenni, azonban az szenzoronként igényelne plusz jeladót, valamint a korábban említett akkumulátor probléma miatt sem biztos, hogy célszerû lenne.(Emellett a költségeket is megnövelné.)
+	
+	Egy elrugaszkodott, mégis lehetséges, érdekes és sokoldalú fejlesztési lehetõség lenne, ha reverzibilissé tennénk az adatforgalmat. Elképzelhetõnek találom, hogy az olvasott jelek alapján valós idõben járást korrigáló jelet küldjünk vissza az adott testrészre. Ez történhet ingert kiváltó elektromos impulzussal, de akár egy mechanikus rendszerrel is. Ezzel lehetne gyorsítani a tanulást, vagy a rehabilitációt. Ez természetesen történhet vizuális visszacsatolással is.
+	
+	$ $
+
+
+	
+\end{document}
