@@ -62,6 +62,7 @@ void setup() {
   IMU2.setAccelRange(MPU9250::ACCEL_RANGE_8G);
   IMU2.setGyroRange(MPU9250::GYRO_RANGE_500DPS);
   IMU2.setDlpfBandwidth(MPU9250::DLPF_BANDWIDTH_20HZ);
+  Serial.print("Time,Sensor,Acc_x,Acc_y,Acc_z,Gyro_x,Gyro_z,Gyro_z\n");
 }
 
 
@@ -70,37 +71,35 @@ void loop() {
   // read the sensor
   
   Serial.print(millis());
-  Serial.print("\t");
-  Serial.print("11\t");
+  Serial.print(",0,");
   IMU1.readSensor();
   Serial.print(IMU1.getAccelX_mss(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU1.getAccelY_mss(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU1.getAccelZ_mss(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU1.getGyroX_rads(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU1.getGyroY_rads(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU1.getGyroZ_rads(),6);
   Serial.print("\n");
 
   //delay(t);
   Serial.print(millis());
-  Serial.print("\t");
-  Serial.print("10\t");
+  Serial.print(",1,");
   IMU2.readSensor();
   Serial.print(IMU2.getAccelX_mss(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU2.getAccelY_mss(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU2.getAccelZ_mss(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU2.getGyroX_rads(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU2.getGyroY_rads(),6);
-  Serial.print("\t");
+  Serial.print(",");
   Serial.print(IMU2.getGyroZ_rads(),6);
   Serial.print("\n");
 }
